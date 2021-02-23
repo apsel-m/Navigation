@@ -29,34 +29,66 @@ import NavigationComponent from './src/NavigationComponent';
 import {createStackNavigator} from '@react-navigation/stack';
 import Home from './src/Home';
 import Details from './src/Details';
-
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 const Drawer = createDrawerNavigator();
-const Stack = createStackNavigator();
+const HomeStack = createStackNavigator();
+const DetailsStack = createStackNavigator();
+const HomeStackScreen = ({navigation}) => {
+  <HomeStack.Navigator
+    initialRouteName="Home"
+    screenOptions={{
+      headerStyle: {
+        backgroundColor: '#009387',
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+    }}>
+    <HomeStack.Screen
+      name="Home"
+      component={Home}
+      options={{
+        title: 'Overview',
+        headerLeft: () => (
+          <Icon.Button
+            name="ios-menu"
+            size={25}
+            backgroundColor="#009387"
+            onPress={() => navigation.toggleDrawer()}></Icon.Button>
+        ),
+      }}
+    />
+  </HomeStack.Navigator>;
+};
+const DetailsStackScreen = ({navigation}) => {
+  <DetailsStack.Navigator
+    initialRouteName="Home"
+    screenOptions={{
+      headerStyle: {
+        backgroundColor: '#009387',
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+    }}>
+    <DetailsStack.Screen name="Details" component={Details} />
+  </DetailsStack.Navigator>;
+};
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Home"
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: '#009387',
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-            alignItems: 'center',
-            justifyContent: 'center',
-          },
-        }}>
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{
-            title: 'Overview',
-          }}
-        />
-        <Stack.Screen name="Details" component={Details} />
-      </Stack.Navigator>
+      <Drawer.Navigator initialRouteName="Home">
+        <Drawer.Screen name="Home" component={HomeStackScreen} />
+        <Drawer.Screen name="Details" component={DetailsStackScreen} />
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 }
